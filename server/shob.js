@@ -32,6 +32,19 @@ function Shob(jid, pwd, urlback) {
 		function(stanza) {
 			util.debug(stanza.name);
 			util.debug(stanza);
+			var st = stanza.toString();
+			var request = back.request('POST', u.pathname, {'Content-Length' : st.length});
+			request.on('response', function(response) {
+				var buff = '';
+				response.on('data', function(chunk) {
+					buff += chunk;
+				});
+				response.on('end', function() {
+					console.log(buff);
+				});
+			});
+			request.write(st);
+			request.end();
 		});
 }
 
