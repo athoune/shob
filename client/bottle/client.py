@@ -2,9 +2,16 @@
 
 import xml.etree.ElementTree
 
+import urllib
+
 from bottle import route, run, request
 
 presences = {}
+
+@route('/start/:jid')
+def start(jid):
+	urllib.urlopen('http://localhost:8124/%s' % jid);
+	return 'ok\n'
 
 @route('/xmpp-back', method='POST')
 def xmpp():
@@ -30,6 +37,5 @@ def stanza(stanza):
 
 def iq(stanza):
 	pass
-
 
 run(host='localhost', port=8125)
