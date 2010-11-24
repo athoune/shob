@@ -4,7 +4,9 @@ import xml.etree.ElementTree
 
 import urllib
 
-from bottle import route, run, request
+from bottle import route, run, request, debug
+
+debug(True)
 
 presences = {}
 
@@ -29,11 +31,13 @@ def xmpp():
 
 def presence(stanza):
 	global presences
-	presences[stanza.attrib['from']] = stanza.find('{jabber:client}status').text
+	f = stanza.find('{jabber:client}status')
+	if f != None:
+		presences[stanza.attrib['from']] = f.text
 	print presences
 
-def stanza(stanza):
-	pass
+def message(stanza):
+	print stanza
 
 def iq(stanza):
 	pass
