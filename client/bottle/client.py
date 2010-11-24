@@ -19,7 +19,10 @@ def start(jid):
 def xmpp():
 	body = request.body.read()
 	#print body
-	stanza = xml.etree.ElementTree.fromstring(body);
+	try:
+		stanza = xml.etree.ElementTree.fromstring(body);
+	except:
+		print body
 	#print stanza.tag
 	if stanza.tag == u'{jabber:client}presence':
 		presence(stanza)
