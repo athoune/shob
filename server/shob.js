@@ -13,14 +13,14 @@ function Shob(jid, pwd, urlback, cb) {
 		});
 	cl.on('online',
 		function() {
-			cl.send(new xmpp.Element('presence',{}));
+			cl.send(new xmpp.Element('presence',{}).c('status').t('shob is my masta'));
 			cb.apply(this);
 		});
 	cl.on('stanza',
 		function(stanza) {
 			util.debug(stanza.name);
 			util.debug(stanza);
-			var st = stanza.toString();
+			var st = new Buffer(stanza.toString());
 			var request = back.request('POST', u.pathname, {'Content-Length' : st.length});
 			request.on('response', function(response) {
 				var buff = '';
@@ -31,8 +31,7 @@ function Shob(jid, pwd, urlback, cb) {
 					console.log(buff);
 				});
 			});
-			request.write(st);
-			request.end();
+			request.end(st);
 		});
 }
 
